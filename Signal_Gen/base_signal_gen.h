@@ -1,12 +1,16 @@
 // Author: Lucas Barnello
 // Purpose: Providing a base class for radar signal generation in RadarSim
 
-////TODO: 
-    // Determing characteristics of the signal 
-    // Create the algorithm that will produce the signal 
-    // Create the funtion (maybe in the base class) that will perform FFTW
-    // Create Getters and Setters for the protected variables 
-
+//TODO
+    // Create CMAKE file for easy compliation
+    // Implement all of the class and derived classes 
+    // Generate time function of the signal in the specific classes (derived from the base class with no implementation)
+    // Generate frequency function of the signal in the base class and override the functionality in child classes
+    // TNEN create a new class  to display the data in the a window - possipbly multiple 
+    // Create new class for the advanced detection and tracking algorithms 
+    // Simulate various EXM techniques such as noise, jamming, deception jamming, frequency hopping etc
+    // Create a visual model of the response to the ECM and create algorithms to improve radar resilience 
+    
 #ifndef SIGNAL_GEN_H
 #define SIGNAL_GEN_H
 
