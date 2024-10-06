@@ -5,14 +5,6 @@
 #include <iostream>
 #include <math.h>
 
-//TODO
-    // Create CMAKE file for easy compliation
-    // Finalize necessary data initialization
-    // Create time function of signal
-    // Create Freq Function of signal
-    // Ensure all edge cases in pulse signal types are covered
-    // Display signal
-    
 // Constructor Definition
 Pulse_Radar::Pulse_Radar(double inFrequency, double inPulseWidth, double inPri, double inAmplitude) 
 : Base_Signal_Gen::Base_Signal_Gen(inFrequency, inAmplitude), pri(inPri), pulse_width(inPulseWidth) 
@@ -62,8 +54,6 @@ int main(){
     pr.generateSignal(1);
     std::cout << '\n';
     pr.display();
-    
-
 
     return 0;
 }
