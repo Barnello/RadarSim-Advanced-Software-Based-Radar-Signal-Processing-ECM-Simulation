@@ -1,34 +1,60 @@
 // Author: Lucas Barnello
-// Purpose: Generation of pulse signals 
+// Purpose: Pulsed Radar Signal Generation
+
+#ifndef PULSED_RADAR_H
+#define PULSED_RADAR_H
 
 #include "base_signal_gen.h"
+#include <cmath>
 
-#ifndef PULSE_SIGNAL_GEN_H
-#define PULSE_SIGNAL_GEN_H
-
-class Pulse_Radar : public Base_Signal_Gen{
-private: 
-    double pulse_width  = 0.0; 
-    double pri = 0.0; // Pulse repitiion interval        
-    std::vector<double> signal_data; // Store generated signal data points
-    const std::string waveform_type = "Pulse";
+class Pulse_Radar : public Base_Signal_Gen {
 public:
     // Constructor
-    Pulse_Radar(double inFrequency, double inPulseWidth, double inPri, double inAmplitude);
-   
-    // Destructor
-    ~Pulse_Radar();
+    Pulse_Radar(double frequency, double amplitude, double pulseWidth, double PRI, double dutyCycle)
+        : Base_Signal_Gen(frequency, amplitude), pulseWidth(pulseWidth), PRI(PRI), dutyCycle(dutyCycle) {
+        waveformType = "Pulsed";
+    }
 
-    // Override functions from the base class 
-    void generateSignal(double time) override;  // Print pulse signal information to console
-    void display() override; // Visualize the pulse signal in some form
+    // Generate the pulsed signal
+    void generateSignal(double time) override {
+        std::cout << "Generating Pulse Signal" << '\n';
+        std::vector<double> signal_data;
+        double dt = 1.0 / (10 * frequency); // Sampling rate
+        signal_data.clear();
+        double currentTime = 0.0;
 
-    // Getters and Setters 
-    double getPW(){ return pulse_width; } // Return pulse width
-    double getPRI(){ return pri; } // Return pulse repotition interval
-    void setPW(double newPW){ pulse_width = newPW; } // Set PW value
-    void setPRI(double newPRI){ pri = newPRI; } // Set PRI value 
-    std::string getType(){return waveform_type;} // Return waveform type
+        while (currentTime < time) {
+            if (fmod(currentTime, PRI) <= pulseWidth) {
+                double value = amplitude * std::cos(2 * M_PI * frequency * currentTime);
+                signal_data.push_back(value);
+            } else {
+                signal_data.push_back(0.0);
+            }
+            currentTime += dt;
+    }
+    }
+
+    void display() override {
+        std::cout << "--- Pulsed Radar Signal ---" << std::endl;
+        std::cout << "Frequency: " << getFrequency() << " Hz" << std::endl;
+        std::cout << "Amplitude: " << getAmplitude() << std::endl;
+        std::cout << "Pulse Width: " << pulseWidth << " seconds" << std::endl;
+        std::cout << "PRI: " << PRI << " seconds" << std::endl;
+        std::cout << "Duty Cycle: " << dutyCycle * 100 << " %" << std::endl;
+    }
+
+    // Getters and Setters
+    double getPulseWidth() { return pulseWidth; }
+    double getPRI() { return PRI; }
+    double getDutyCycle() { return dutyCycle; }
+    void setPulseWidth(double newPulseWidth) { pulseWidth = newPulseWidth; }
+    void setPRI(double newPRI) { PRI = newPRI; }
+    void setDutyCycle(double newDutyCycle) { dutyCycle = newDutyCycle; }
+
+private:
+    double pulseWidth;  
+    double PRI;         // Pulse Repetition Interval (seconds)
+    double dutyCycle;   
 };
 
-#endif
+#endif 
