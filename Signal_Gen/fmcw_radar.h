@@ -17,10 +17,11 @@ class FMCW_Radar : public Continuous_Wave_Radar {
         void generateSignal(double time) override {
             std::cout << "Generating FMCW RadarSignal at time " << time << std::endl;
             signalData.clear();
-            
+
             for (double t = 0; t < time; t += time_step) {
                 double freq_t = frequency + (bandwidth_ / this->getSweepRate()) * t; // Frequency at time t
                 double signal_value = amplitude * std::cos(2 * M_PI * freq_t * t);
+                std::lock_guard<std::mutex> lock(mtx);
                 signalData.push_back(signal_value);
             }
         }
@@ -32,6 +33,7 @@ class FMCW_Radar : public Continuous_Wave_Radar {
             std::cout << "Chirp Duration: " << chirpDuration_ << " seconds" << std::endl;
 
             // Print out all of the valuse in the signalData vector
+            std::lock_guard<std::mutex> lock(mtx);
             for(double value : signalData){
                 std::cout << "FMCW: " << value << std::endl;
             }
@@ -45,6 +47,7 @@ class FMCW_Radar : public Continuous_Wave_Radar {
     private:
         double bandwidth_;       // Bandwidth of the frequency sweep
         double chirpDuration_; 
+        std::mutex mtx;
 };
 
 #endif 

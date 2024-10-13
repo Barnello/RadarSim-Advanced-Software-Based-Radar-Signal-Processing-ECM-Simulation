@@ -9,6 +9,7 @@
 #include <cmath>
 #include <mutex>
 #include <chrono>
+#include <unistd.h>
 
 class Continuous_Wave_Radar : public Base_Signal_Gen{
     public: 
@@ -28,10 +29,10 @@ class Continuous_Wave_Radar : public Base_Signal_Gen{
 
                     double signal_value = amplitude * sin(2 * M_PI * frequency * time);
                     signalData.push_back(signal_value); // Store the generated signal value
+                    //std::cout << "Current time: " << time << std::endl;
                 }
-                time += time_step; 
-                // std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Slight delay betweeen generating and displaying
-       
+                
+                time += time_step ; 
             }
         }
 

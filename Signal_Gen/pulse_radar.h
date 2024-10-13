@@ -24,6 +24,7 @@ public:
             double n = std::floor(t / PRI);
             double rect = (t - n * PRI <= pulseWidth) ? 1.0 : 0.0;
             double signal_value = amplitude * rect * std::cos(2 * M_PI * frequency * t);
+            std::lock_guard<std::mutex> lock(mtx);
             signalData.push_back(signal_value);
         }
     }
@@ -37,6 +38,7 @@ public:
         std::cout << "Duty Cycle: " << dutyCycle * 100 << " %" << std::endl;
 
         // Printing out all of the values in the signalData vector
+        std::lock_guard<std::mutex> lock(mtx);
         for(double value : signalData){
             std::cout << "Pulsed: " << value << std::endl;
         }
@@ -53,7 +55,8 @@ public:
 private:
     double pulseWidth;  
     double PRI;         // Pulse Repetition Interval (seconds)
-    double dutyCycle;   
+    double dutyCycle; 
+    std::mutex mtx;  
 };
 
 #endif 
