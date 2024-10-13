@@ -6,6 +6,7 @@
 
 #include "base_signal_gen.h"
 #include <iostream>
+#include <cmath>
 
 class Continuous_Wave_Radar : public Base_Signal_Gen{
     public: 
@@ -16,14 +17,24 @@ class Continuous_Wave_Radar : public Base_Signal_Gen{
         //generate continuous signal 
         void generateSignal(double time) override{
             std::cout << "Generating Continuos wave signal " << std::endl;
+            signalData.clear(); // Clear previous data
+            for (double t = 0; t < time; t += time_step) {
+                double signal_value = amplitude * std::cos(2 * M_PI * frequency * t);
+                signalData.push_back(signal_value); // Store generated value
+            }
         }
 
         void display() override{
-            std::cout<< "--- Continous Wave Radar Signal " << std::endl;
+            std::cout<< "Displaying the following continuous wave signal  " << std::endl;
             std::cout<< "--- Frequency: " << getFrequency() << "Hz" << std::endl;
             std::cout<< "--- Amplitude: " << getAmplitude() << std::endl;
             std::cout<< "--- Sweep Rate: " << sweepRate_ << "Hz/s" << std::endl;
             std::cout<< "--- Time Duration: " << timeDuration_ << "seconds" << std::endl;
+
+            //Printing out all of the values in the signalData vector
+            for (double value : signalData){
+                std::cout << "CW: " << value << std::endl;
+            }
         }
 
         double getSweepRate(){ return sweepRate_; }

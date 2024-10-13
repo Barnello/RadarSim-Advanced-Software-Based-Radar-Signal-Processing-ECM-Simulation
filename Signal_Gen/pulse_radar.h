@@ -18,29 +18,28 @@ public:
     // Generate the pulsed signal
     void generateSignal(double time) override {
         std::cout << "Generating Pulse Signal" << '\n';
-        std::vector<double> signal_data;
-        double dt = 1.0 / (10 * frequency); // Sampling rate
-        signal_data.clear();
-        double currentTime = 0.0;
+        signalData.clear(); // Clear previous signal data
 
-        while (currentTime < time) {
-            if (fmod(currentTime, PRI) <= pulseWidth) {
-                double value = amplitude * std::cos(2 * M_PI * frequency * currentTime);
-                signal_data.push_back(value);
-            } else {
-                signal_data.push_back(0.0);
-            }
-            currentTime += dt;
-    }
+        for (double t = 0; t < time; t += time_step) {
+            double n = std::floor(t / PRI);
+            double rect = (t - n * PRI <= pulseWidth) ? 1.0 : 0.0;
+            double signal_value = amplitude * rect * std::cos(2 * M_PI * frequency * t);
+            signalData.push_back(signal_value);
+        }
     }
 
     void display() override {
-        std::cout << "--- Pulsed Radar Signal ---" << std::endl;
+        std::cout << "Displaying the following pulsed signal " << std::endl;
         std::cout << "Frequency: " << getFrequency() << " Hz" << std::endl;
         std::cout << "Amplitude: " << getAmplitude() << std::endl;
         std::cout << "Pulse Width: " << pulseWidth << " seconds" << std::endl;
         std::cout << "PRI: " << PRI << " seconds" << std::endl;
         std::cout << "Duty Cycle: " << dutyCycle * 100 << " %" << std::endl;
+
+        // Printing out all of the values in the signalData vector
+        for(double value : signalData){
+            std::cout << "Pulsed: " << value << std::endl;
+        }
     }
 
     // Getters and Setters

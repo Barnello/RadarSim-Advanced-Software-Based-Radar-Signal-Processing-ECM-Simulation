@@ -27,7 +27,7 @@ public:
     // virtual ~Base_Signal_Gen(){}
 
     // Pure virtual functions that must be implemented by derived classes
-    virtual void generateSignal(double time) = 0;       // Print signal information to console
+    virtual void generateSignal(double time) = 0;       // Generate the signal to be used in the display functionality
     virtual void display() = 0;    // Visualize the signal in some form
 
     // Getters
@@ -45,6 +45,8 @@ protected:
     double frequency;                // Operating frequency (in Hz)
     double amplitude;             // Amplitude of the signal
     std::string waveformType;     // Type of waveform (e.g., "Pulse", "FMCW")
+    std::vector<double> signalData; // Attribute for all of the signal calsses to stor signal 
+    double time_step = 1 / (2*getFrequency());
 };
 
 #endif
