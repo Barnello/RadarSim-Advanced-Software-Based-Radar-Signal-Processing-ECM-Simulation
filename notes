@@ -1,0 +1,8 @@
+Notes for development process [deleted at project completion]
+
+- The application will have the ability to"
+    - Create a waveform 
+    - Add noise or interference with that wave form 
+    - Display the waveform in real time 
+    - Display up to (maybe 4) waveforms at once, but start with one 
+    - Store locally in an sql lite database  
