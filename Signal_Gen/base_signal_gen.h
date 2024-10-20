@@ -24,7 +24,7 @@ public:
     : frequency(frequency), amplitude(amplitude){}
 
     // Virtual destructor (important for base classes with virtual methods)
-    // virtual ~Base_Signal_Gen(){}
+    virtual ~Base_Signal_Gen() = default; 
 
     // Pure virtual functions that must be implemented by derived classes
     virtual void generateSignal(double time) = 0;       // Generate the signal to be used in the display functionality
