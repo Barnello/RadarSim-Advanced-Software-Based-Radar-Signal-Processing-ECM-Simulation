@@ -8,3 +8,11 @@
         use QT?
 
  */
+
+ #include <iostream>
+
+// Test function as development 
+int main (){
+
+    return 0;
+}
